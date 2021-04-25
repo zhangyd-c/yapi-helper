@@ -1,0 +1,186 @@
+<idea-plugin>
+    <id>com.xkcoding.idea.plugins</id>
+    <name>YApi Helper</name>
+    <version>1.0.0</version>
+    <vendor email="237497819@qq.com" url="https://xkcoding.com">xkcoding</vendor>
+
+    <description><![CDATA[
+        <h3>Api development tool, YApi api automatic generation; support Copy as cURL,</h3><br><br>
+        Features：<br>
+        <ul>
+          <li>Javadoc-based analysis,no additional annotations.</li>
+          <li>Supporting field filtering, automatically ignoring the analysis of filtering fields.</li>
+          <li>Automatically identify classes, generate markdown documents or upload to Yapi.</li>
+          <li>Support list, set, collection and other data structures, and support nested generic parsing.</li>
+          <li>Support the parsing of common annotations such as @NotNull and @ResponseBody, and generate Yapi documents based on json5.
+          </li>
+        </ul>
+        <br>
+        Usage：<br>
+        <ul>
+          <li>Locate the cursor to the method area or class name, right-click YApi Helper.</li>
+        </ul>
+        <br>
+        <em>Support annotations：</em><br>
+        javax.validation.constraints.Min<br>
+        javax.validation.constraints.Max<br>
+        javax.validation.constraints.NotNull<br>
+        javax.validation.constraints.NotBlank<br>
+        javax.validation.constraints.NotEmpty<br>
+        javax.validation.constraints.Size<br>
+        org.hibernate.validator.constraints.Length<br>
+        org.hibernate.validator.constraints.Range<br>
+        org.springframework.web.bind.annotation.Controller<br>
+        org.springframework.web.bind.annotation.RestController<br>
+        org.springframework.web.bind.annotation.RequestMapping<br>
+        org.springframework.web.bind.annotation.GetMapping<br>
+        org.springframework.web.bind.annotation.PutMapping<br>
+        org.springframework.web.bind.annotation.DeleteMapping<br>
+        org.springframework.web.bind.annotation.PatchMapping<br>
+        org.springframework.web.bind.annotation.PathVariable<br>
+        org.springframework.web.bind.annotation.RequestBody<br>
+        org.springframework.web.bind.annotation.RequestParam<br>
+        org.springframework.web.bind.annotation.ResponseBody<br><br>
+        特性：<br>
+        <ul>
+          <li>基于javadoc解析，无代码入侵</li>
+          <li>支持字段过滤，自动忽略过滤字段的解析</li>
+          <li>自动识别类，生成markdown文档或上传到YApi</li>
+          <li>支持List、Set、Collection等数据结构，支持嵌套泛型解析</li>
+          <li>支持@NotNull、@ResponseBody等常用注解的解析，基于json5生成YApi文档</li>
+        </ul>
+        <br>
+        用法：<br>
+        <ul>
+          <li>将光标定位到方法区域或者类名，鼠标右键单击"YApi Helper".</li>
+        </ul>
+        <br>
+        自定义配置项：<br>
+        Preferences —> Other Settings —> YApi Helper Setting<br><br>
+        <table border="1">
+          <tr>
+            <th align="left">配置项</th>
+            <th align="left">含义</th>
+          </tr>
+          <tr>
+            <td>Exclude Fields</td>
+            <td>过滤字段（多个字段以","分隔）</td>
+          </tr>
+          <tr>
+            <td>Save Directory</td>
+            <td>markdown文档保存目录（绝对路径）</td>
+          </tr>
+          <tr>
+            <td>Indent Style</td>
+            <td>二级字段缩进前缀</td>
+          </tr>
+          <tr>
+            <td>Overwrite exists docs</td>
+            <td>是否覆盖同名markdown文档</td>
+          </tr>
+          <tr>
+            <td>Extract filename from doc comments</td>
+            <td>是否从javadoc抽取文件名</td>
+          </tr>
+          <tr>
+            <td>YApi server url</td>
+            <td>YApi部署服务器地址</td>
+          </tr>
+          <tr>
+            <td>Project token</td>
+            <td>项目token</td>
+          </tr>
+          <tr>
+            <td>Default save category</td>
+            <td>默认保存分类</td>
+          </tr>
+          <tr>
+            <td>Classify API automatically</td>
+            <td>是否自动分类</td>
+          </tr>
+          <tr>
+            <td>Is Multiple Module Project</td>
+            <td>是否是多模块项目</td>
+          </tr>
+          <tr>
+            <td>Is Use Default Token</td>
+            <td>是否使用默认token</td>
+          </tr>
+        </table>
+        <br>
+        <h1>Copy as cURL</h1>
+        Features：<br>
+        <ul>
+          <li>right-click generator curl command</li>
+        </ul>
+        特性：<br>
+        <ul>
+          <li>Generate the curl command with a key from the interface method, which can be executed on CMD /bash. Headers can be customized</li>
+        </ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        <em>1.0.0</em><br>
+        <ul>
+          <li>支持生成接口定义</li>
+          <li>复制接口定义为命令行请求模式</li>
+          <li>支持自签名内网部署的YApi</li>
+          <li>移除kotin支持</li>
+        </ul>
+    ]]>
+    </change-notes>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html for description -->
+    <idea-version since-build="173.0"/>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.java</depends>
+
+    <resource-bundle>messages.YApiHelperBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="com.xkcoding.idea.plugins.yapi_helper.config.YApiHelperConfig"/>
+
+        <projectConfigurable instance="com.xkcoding.idea.plugins.yapi_helper.setting.GroupSettingConfigurable">
+            <configurable instance="com.xkcoding.idea.plugins.yapi_helper.config.ApiGeneratorSetting"/>
+            <configurable instance="com.xkcoding.idea.plugins.yapi_helper.setting.CURLSettingConfigurable"/>
+        </projectConfigurable>
+        <projectService serviceImplementation="com.xkcoding.idea.plugins.yapi_helper.setting.CURLSettingState"/>
+    </extensions>
+
+    <actions>
+        <group id="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsActionGroup"
+               class="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsActionGroup"
+               popup="true">
+            <action id="com.xkcoding.idea.plugins.yapi_helper.action.CopyIPAction"
+                    class="com.xkcoding.idea.plugins.yapi_helper.action.CopyIPAction"
+                    text="Copy Current IP">
+            </action>
+            <action id="com.xkcoding.idea.plugins.yapi_helper.action.CopyRestfulUriAction"
+                    class="com.xkcoding.idea.plugins.yapi_helper.action.CopyRestfulUriAction"
+                    text="Copy Restful Uri">
+            </action>
+            <action id="CopyAsFetchAction" class="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsFetchAction"
+                    text="Copy As Fetch"/>
+            <action id="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsCurlCMDAction"
+                    class="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsCurlCMDAction" text="Copy As CURL (Cmd)">
+            </action>
+            <action id="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsCurlBashAction"
+                    class="com.xkcoding.idea.plugins.yapi_helper.action.CopyAsCurlBashAction" text="Copy As CURL (Bash)">
+            </action>
+            <action class="com.xkcoding.idea.plugins.yapi_helper.action.GenerateModuleNamesAction"
+                    text="Scan Project Modules And Save">
+            </action>
+            <add-to-group group-id="EditorLangPopupMenu" anchor="first"/>
+        </group>
+        <action class="com.xkcoding.idea.plugins.yapi_helper.action.ApiGenerateAction"
+                text="Upload To YApi"
+                description="Generate Api for target code.">
+            <add-to-group group-id="EditorLangPopupMenu" anchor="first"/>
+        </action>
+    </actions>
+
+</idea-plugin>
